@@ -13,9 +13,10 @@ end
 
 post '/' do
   application = ActiveSupport::JSON.decode(params[:application])
-  Task.new( :application => application["NSApplicationName"], :timestamp => Time.now ).save
+  Task.new( :application => application["NSApplicationName"], :timestamp => Time.now, :user_name => params[:user_name] ).save
+  # puts application.inspect
 end
 
-get '/' do
-  Task.count(:group => :application).inspect
+get '/:user_name' do
+  Task.count(:group => :application, :conditions => ['user_name = ?', params[:user_name]]).inspect
 end
