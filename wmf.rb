@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require 'active_record'
 require 'active_support'
+require 'haml'
 
 ActiveRecord::Base.establish_connection(
   :adapter => 'sqlite3',
@@ -18,5 +19,6 @@ post '/' do
 end
 
 get '/:user_name' do
-  Task.count(:group => :application, :conditions => ['user_name = ?', params[:user_name]]).inspect
+  @tasks = Task.count(:group => :application, :conditions => ['user_name = ?', params[:user_name]])
+  haml :view
 end
